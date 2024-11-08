@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.U2D.IK;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Weapon currentWeapon;
+
     [SerializeField] Vector2 maxSpeed;
     [SerializeField] Vector2 timeToFullSpeed;
     [SerializeField] Vector2 timeToStop;
@@ -15,17 +18,19 @@ public class PlayerMovement : MonoBehaviour
     Vector2 moveFriction;
     Vector2 stopFriction;
     Rigidbody2D rb;
-
+    private BoxCollider2D bc;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         moveVelocity = 2* maxSpeed / timeToFullSpeed;
         moveFriction = (-2) * maxSpeed / (timeToFullSpeed * timeToFullSpeed);
-        stopFriction = (-2) * maxSpeed / (timeToStop * timeToStop);
+        stopFriction = (-2) * maxSpeed / (timeToStop * timeToStop);;
+        
     }
 
     public void Move()
     {
+        
         // set value 0 setiap update
         moveDirection = Vector2.zero;
 
@@ -81,4 +86,19 @@ public class PlayerMovement : MonoBehaviour
     {
         return rb.velocity != Vector2.zero;
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+        {
+            /*
+            if (other.gameObject.CompareTag("Player"))
+            {
+                Debug.Log("Objek Player Memasuki trigger");
+            }
+            else{
+                Debug.Log("Bukan Objek Player yang memasuki Trigger");
+            }
+            */
+        }
+
+
 }
