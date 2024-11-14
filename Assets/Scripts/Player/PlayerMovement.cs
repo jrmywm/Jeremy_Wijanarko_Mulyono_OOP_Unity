@@ -6,7 +6,6 @@ using UnityEngine.U2D.IK;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Weapon currentWeapon;
 
     [SerializeField] Vector2 maxSpeed;
     [SerializeField] Vector2 timeToFullSpeed;
@@ -89,15 +88,6 @@ public class PlayerMovement : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
         {
-            /*
-            if (other.gameObject.CompareTag("Player"))
-            {
-                Debug.Log("Objek Player Memasuki trigger");
-            }
-            else{
-                Debug.Log("Bukan Objek Player yang memasuki Trigger");
-            }
-            */
         }
 
 

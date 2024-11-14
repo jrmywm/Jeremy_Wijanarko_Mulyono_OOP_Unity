@@ -24,7 +24,7 @@ public class Portal : MonoBehaviour
             ChangePosition();
         }
 
-        PlayerMovement player = FindObjectOfType<PlayerMovement>();
+        Player player = FindObjectOfType<Player>();
         if (player != null)
         {
             if (player.currentWeapon == null)

@@ -41,14 +41,14 @@ public class WeaponPickup : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player"))
         {
-            PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
-            if (playerMovement != null)
+            Player player = other.GetComponent<Player>();
+            if (player != null)
             {
-                if (playerMovement.currentWeapon != null)
+                if (player.currentWeapon != null)
                 {
                     // Overwrite weapon
-                    playerMovement.currentWeapon.transform.parent = null;
-                    TurnVisual(false, playerMovement.currentWeapon);
+                    player.currentWeapon.transform.parent = null;
+                    TurnVisual(false, player.currentWeapon);
                 }
 
                 Debug.Log("Player entered trigger and picked up a new weapon");
@@ -58,7 +58,7 @@ public class WeaponPickup : MonoBehaviour
                 weapon.transform.localPosition = new Vector3(0.0f, 0.3f, 0.0f); 
 
                 TurnVisual(true, weapon);
-                playerMovement.currentWeapon = weapon; // Set the current weapon to the new weapon
+                player.currentWeapon = weapon; // Set the current weapon to the new weapon
             }
         }
         else

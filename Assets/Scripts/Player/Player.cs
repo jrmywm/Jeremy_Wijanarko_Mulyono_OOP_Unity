@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
 
     private float objectWidth;
     private float objectHeight;
+    public Weapon currentWeapon;
+
 
     private UnityEngine.Vector2 screenBounds;
 
