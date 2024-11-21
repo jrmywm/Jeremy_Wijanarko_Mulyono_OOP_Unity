@@ -256,7 +256,7 @@ MonoBehaviour:
   totalKill: 1
   totalKillWave: 2
   spawnDelay: 2
-  initialSpawnCount: 1
+  initialSpawnCount: 0
   spawnMultiplier: 1
   multiplierIncrement: 1
   combatManager: {fileID: 1694303799}
