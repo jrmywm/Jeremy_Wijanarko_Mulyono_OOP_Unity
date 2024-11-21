@@ -32,4 +32,11 @@ public class EnemyForward : Enemy
         transform.Translate(direction * speed * Time.deltaTime);
         Debug.Log("Enemy Position: " + transform.position);
     }
+
+    void OnBecameInvisible()
+    {
+        float spawnX = Random.Range(-screenBounds.x, screenBounds.x);
+        transform.position = new Vector2(spawnX, screenBounds.y);
+        direction = Vector2.down; 
+    }
 }

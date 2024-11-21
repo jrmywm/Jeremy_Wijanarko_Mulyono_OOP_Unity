@@ -10,31 +10,26 @@ public class Bullet : MonoBehaviour
     private Rigidbody2D rb;
     private IObjectPool<Bullet> pool;
 
-    public void SetPool(IObjectPool<Bullet> pool)
+    public void Deactivate()
     {
-        this.pool = pool;
-    }
-
-    void Awake()
-    {
-        // Initialization code if needed
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+        if (pool != null)
+        {
+            pool.Release(this);
+        }
     }
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.velocity = Vector2.up * bulletSpeed;
-        }
-        else    
-        {
-            Debug.LogError("Rigidbody2D component not found on the GameObject.");
-        }
+
     }
 
     void Update()
     {
+        rb.velocity = Vector2.up * bulletSpeed;
         if (Camera.main != null)
         {
             Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));
@@ -47,17 +42,11 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Implementasikan logika untuk menangani collision dengan objek lain
-        // Misalnya, mengurangi health objek yang terkena peluru
-        // Setelah itu, kembalikan peluru ke pool
-        if (pool != null)
+        if (other.CompareTag(gameObject.tag))
         {
-            pool.Release(this);
+            return;
         }
-        else
-        {
-            Debug.LogError("Pool is not set. Please ensure SetPool is called before OnTriggerEnter2D.");
-        }
+        Deactivate();   
     }
 
     private void OnBecameInvisible()

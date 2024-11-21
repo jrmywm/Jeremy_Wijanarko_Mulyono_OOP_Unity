@@ -2,72 +2,71 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-    public class InvincibilityComponent: MonoBehaviour
+public class InvincibilityComponent : MonoBehaviour
+{
+    [SerializeField] private int blinkingCount = 7; // Number of times the object blinks
+    [SerializeField] private float blinkInterval = 0.1f; // Interval between blinks
+    [SerializeField] private Material blinkMaterial; // Material to use during blinking
+
+    private SpriteRenderer spriteRenderer;
+    private Material originalMaterial; 
+    private Coroutine blinkRoutine; 
+    public bool isInvincible = false;
+    private bool isPlayer = false;
+
+    void Start()
     {
-
-        [SerializeField] private int blinkingCount = 7;
-        [SerializeField] private float blinkInterval = 0.1f;
-        [SerializeField] private Material blinkMaterial;
-
-        private SpriteRenderer spriteRenderer;
-        private Material originalMaterial;
-        private Coroutine flashRoutine;
-        private Coroutine blinkRoutine;
-        public bool isInvincible = false;
-        private bool isPlayer = false;
-        void Start()
-        {
-        isPlayer = gameObject.CompareTag("Player");
+        isPlayer = gameObject.CompareTag("Player"); // Check if the object is tagged as "Player"
 
         if (isPlayer)
         {
+            // If the object is the player, find the "Ship" child and get its SpriteRenderer
             Transform shipTransform = transform.Find("Ship");
             if (shipTransform != null)
             {
                 spriteRenderer = shipTransform.GetComponent<SpriteRenderer>();
             }
-            else
-            {
-                Debug.LogError("Player object doesn't have a child named 'Ship'!");
-            }
         }
         else
         {
+            // If the object is not the player, get the SpriteRenderer of the current object
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
+
         if (spriteRenderer != null)
         {
-            originalMaterial = spriteRenderer.material;
+            originalMaterial = spriteRenderer.material; // Store the original material
+        }
+        else
+        {
+            Debug.LogError("SpriteRenderer not found!");
         }
     }
-        private IEnumerator BlinkingRoutine()
+
+    private IEnumerator BlinkingRoutine()
+    {
+        isInvincible = true;
+
+        for (int i = 0; i < blinkingCount; i++)
         {
-            isInvincible = true;
-
-            for (int i = 0; i < blinkingCount; i++)
+            if (spriteRenderer != null)
             {
-                spriteRenderer.material = blinkMaterial;
-
-                yield return new WaitForSeconds(blinkInterval);
-
-                spriteRenderer.material = originalMaterial;
-                
-                yield return new WaitForSeconds(blinkInterval);
-            }
-
-            isInvincible = false;
-            blinkRoutine = null;
-        }
-        public void StartBlinking()
-        {
-            if (!isInvincible)
-            {
-                if (blinkRoutine != null)
-                {
-                    StopCoroutine(blinkRoutine);
-                }
-                blinkRoutine = StartCoroutine(BlinkingRoutine());
+                spriteRenderer.material = blinkMaterial; 
+                yield return new WaitForSeconds(blinkInterval); 
+                spriteRenderer.material = originalMaterial; 
+                yield return new WaitForSeconds(blinkInterval); 
             }
         }
 
+        isInvincible = false; 
     }
+
+    public void StartBlinking()
+    {
+        if (blinkRoutine != null)
+        {
+            StopCoroutine(blinkRoutine);
+        }
+        blinkRoutine = StartCoroutine(BlinkingRoutine());
+    }
+}

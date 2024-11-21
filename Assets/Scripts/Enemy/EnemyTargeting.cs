@@ -42,8 +42,10 @@ public class EnemyTargeting : Enemy
     {
         if (player != null)
         {
+            // Calculate direction towards the player
             Vector3 direction = (player.position - transform.position).normalized;
-            transform.Translate(direction * speed * Time.deltaTime);
+            // Move the enemy towards the player with a constant speed
+            transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
         }
     }
 

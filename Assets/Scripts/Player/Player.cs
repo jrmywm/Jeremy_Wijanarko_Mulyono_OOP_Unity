@@ -13,8 +13,9 @@ public class Player : MonoBehaviour
 
     private float objectWidth;
     private float objectHeight;
-    public Weapon currentWeapon;
+    public bool hasWeapon = false;
 
+    public Weapon currentWeapon;
 
     private UnityEngine.Vector2 screenBounds;
 
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour
     
     void Start()
     {
+        
         playerMovement = GetComponent<PlayerMovement>();
         animator = GameObject.Find("EngineEffect").GetComponent<Animator>();
 

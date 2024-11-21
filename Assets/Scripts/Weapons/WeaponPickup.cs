@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class WeaponPickup : MonoBehaviour
 {
-    [SerializeField] Weapon weaponHolder;
-    Weapon weapon;
+    [SerializeField] private Weapon weapon;
 
     void Awake()
     {
-        if (weaponHolder != null)
-        {
-            weapon = weaponHolder;
-        }
-        else
+        weapon = weapon.GetComponent<Weapon>();
+        if (weapon == null)
         {
             Debug.LogError("Weapon Holder is not assigned in the Inspector.");
         }
@@ -31,34 +27,33 @@ public class WeaponPickup : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (weapon == null)
+        Player player = other.GetComponent<Player>();
+        if (player != null)
         {
-            Debug.LogError("Weapon is not assigned.");
-            return;
-        }
-
-        if (other.gameObject.CompareTag("Player"))
-        {
-            Player player = other.GetComponent<Player>();
-            if (player != null)
+            if (player.currentWeapon != null)
             {
-                if (player.currentWeapon != null)
-                {
-                    // Overwrite weapon
-                    player.currentWeapon.transform.parent = null;
-                    TurnVisual(false, player.currentWeapon);
-                }
+                // Overwrite weapon
+                player.currentWeapon.transform.parent = null;
+                TurnVisual(false, player.currentWeapon);
+            }
 
+            if (weapon != null)
+            {
                 Debug.Log("Player entered trigger and picked up a new weapon");
                 weapon.transform.parent = other.transform;
 
                 // Set the specific local position for the weapon
-                weapon.transform.localPosition = new Vector3(0.0f, 0.3f, 0.0f); 
+                weapon.transform.localPosition = new Vector3(0.0f, 0.3f, 0.0f);
 
                 TurnVisual(true, weapon);
                 player.currentWeapon = weapon; // Set the current weapon to the new weapon
+                player.hasWeapon = true; // Update player's weapon status
+            }
+            else
+            {
+                Debug.LogError("Weapon is not assigned.");
             }
         }
         else
@@ -67,7 +62,7 @@ public class WeaponPickup : MonoBehaviour
         }
     }
 
-    void TurnVisual(bool on)
+    private void TurnVisual(bool on)
     {
         foreach (var component in GetComponentsInChildren<Renderer>())
         {
@@ -75,7 +70,7 @@ public class WeaponPickup : MonoBehaviour
         }
     }
 
-    void TurnVisual(bool on, Weapon weapon)
+    private void TurnVisual(bool on, Weapon weapon)
     {
         foreach (var component in weapon.GetComponentsInChildren<Renderer>())
         {

@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 7805428177580363404}
   m_Layer: 0
   m_Name: EnemyHorizontal
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,6 +103,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d41025ca2fad244bb5d15e5ec85b3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combatManager: {fileID: 0}
+  spawner: {fileID: 0}
+  level: 0
 --- !u!50 &8964458655106027795
 Rigidbody2D:
   serializedVersion: 4
@@ -142,6 +145,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1623297a0d39f2a49a4f69e3c190a09c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combatManager: {fileID: 0}
+  spawner: {fileID: 0}
+  level: 0
   speed: 5
 --- !u!61 &5300947395696262203
 BoxCollider2D:
@@ -227,4 +233,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50c380ab273c26b4198b83d204b3b57d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthComponent: {fileID: 0}
+  healthComponent: {fileID: 6666140066373147451}

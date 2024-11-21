@@ -20,15 +20,8 @@ public class Weapon : MonoBehaviour
     private readonly int maxSize = 100;
     private float timer;
     public Transform parentTransform;
-    private Player player; // Reference to PlayerMovement
 
     void Awake()
-    {
-        player = FindObjectOfType<Player>(); // Find PlayerMovement in the scene
-        DontDestroyOnLoad(gameObject);
-    }
-
-    void Start()
     {
         objectPool = new ObjectPool<Bullet>(
             CreateBullet,
@@ -39,18 +32,14 @@ public class Weapon : MonoBehaviour
             defaultCapacity,
             maxSize
         );
+        DontDestroyOnLoad(gameObject);
     }
 
-    void Update()
+    void Start()
     {
-        if (player.currentWeapon == null) return; // Do not shoot if player hasn't picked up the weapon
 
-        if (Time.time > timer)
-        {
-            Shoot();
-            timer = Time.time + shootIntervalInSeconds;
-        }
     }
+
 
     private Bullet CreateBullet()
     {
@@ -80,12 +69,16 @@ public class Weapon : MonoBehaviour
         Destroy(bullet.gameObject);
     }
 
-    private void Shoot()
+    private void FixedUpdate()
     {
-        Bullet newBullet = objectPool.Get();
-        if (newBullet == null)
-
-        newBullet.transform.position = bulletSpawnPoint.position;
-        newBullet.transform.rotation = bulletSpawnPoint.rotation;
+        if (Time.time > timer && objectPool != null && Player.Instance.hasWeapon == true)
+        {
+            Bullet bulletObject = objectPool.Get();
+            if (bulletObject != null)
+            {
+                bulletObject.transform.SetPositionAndRotation(bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+                timer = Time.time + shootIntervalInSeconds;
+            }
+        }
     }
 }

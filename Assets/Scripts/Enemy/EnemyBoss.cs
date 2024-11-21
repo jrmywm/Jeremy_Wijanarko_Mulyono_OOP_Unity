@@ -4,47 +4,28 @@ using UnityEngine;
 
 public class EnemyBoss : MonoBehaviour
 {
-    public float speed = 2f;
-    public GameObject bulletPrefab;
-    public Transform firePoint;
-    public float fireRate = 1f;
-
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private float fireRate = 1f;
+    private bool movingRight = true;
     private Vector2 screenBounds;
-    private bool movingRight;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform firePoint; // Ensure this is assigned in the inspector
+
     private float nextFireTime;
+
 
     void Start()
     {
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
-        SpawnEnemy();
     }
 
-
-    // Update is called once per frame
     void Update()
     {
-        MoveEnemy();
+        Move();
         Shoot();
     }
 
-    void SpawnEnemy()
-    {
-        float spawnY = Random.Range(-screenBounds.y, screenBounds.y);
-        if (Random.value > 0.5f)
-        {
-            // Spawn from left
-            transform.position = new Vector2(-screenBounds.x, spawnY);
-            movingRight = true;
-        }
-        else
-        {
-            // Spawn from right
-            transform.position = new Vector2(screenBounds.x, spawnY);
-            movingRight = false;
-        }
-    }
-
-    void MoveEnemy()
+    void Move()
     {
         if (movingRight)
         {
