@@ -30,6 +30,8 @@ public class CombatManager : MonoBehaviour
     public void EnemyDefeated()
     {
         totalEnemies--;
+        // Update UI when an enemy is defeated
+        FindObjectOfType<MainUI>().UpdateEnemiesLeft();
     }
 
     private void InitializeWave()
@@ -48,10 +50,15 @@ public class CombatManager : MonoBehaviour
         {
             spawner.BeginSpawning();
         }
+
+        // Update UI when a new wave starts
+        FindObjectOfType<MainUI>().UpdateWave();
     }
 
     public void RegisterEnemy()
     {
         totalEnemies++;
+        // Update UI when a new enemy is registered
+        FindObjectOfType<MainUI>().UpdateEnemiesLeft();
     }
 }

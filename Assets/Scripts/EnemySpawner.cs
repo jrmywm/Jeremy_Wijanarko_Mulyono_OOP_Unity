@@ -41,7 +41,8 @@ public class EnemySpawner : MonoBehaviour
     {
         for (int i = 0; i < currentSpawnCount; i++)
         {
-            Instantiate(enemyPrefab, transform.position, transform.rotation);
+            Enemy enemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
+            enemy.spawner = this;
             combatManager.RegisterEnemy();
             yield return new WaitForSeconds(spawnDelay);
         }
@@ -57,5 +58,8 @@ public class EnemySpawner : MonoBehaviour
             totalKillWave = 0;
             currentSpawnCount += spawnMultiplier;
         }
+
+        // Update UI when an enemy is killed
+        FindObjectOfType<MainUI>().UpdatePoints();
     }
 }
