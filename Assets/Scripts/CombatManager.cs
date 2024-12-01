@@ -1,64 +1,61 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
+    public EnemySpawner[] enemySpawners;
+    public float timer = 0;
     [SerializeField] private float waveInterval = 5f;
-    public int waveNumber = 1;
+    public int waveNumber = 0;
     public int totalEnemies = 0;
-    public float timer = 0f;
+    public int points = 0;
 
-    public List<EnemySpawner> spawners;
-
-    private void Awake()
+    private void Start()
     {
-        InitializeWave();
+        waveNumber = 0;
+        UpdateUI();
     }
 
     private void Update()
     {
-        if (totalEnemies == 0 || waveNumber == 1)
+        if (totalEnemies <= 0 || waveNumber == 0)
         {
             timer += Time.deltaTime;
             if (timer >= waveInterval)
             {
-                StartNextWave();
+                StartNewWave();
             }
         }
+        UpdateUI();
     }
 
-    public void EnemyDefeated()
+    private void StartNewWave()
     {
-        totalEnemies--;
-        // Update UI when an enemy is defeated
-        FindObjectOfType<MainUI>().UpdateEnemiesLeft();
-    }
-
-    private void InitializeWave()
-    {
-        waveNumber = 1;
-        timer = 0f;
-    }
-
-    private void StartNextWave()
-    {
-        timer = 0f;
+        timer = 0;
         waveNumber++;
         totalEnemies = 0;
-
-        foreach (EnemySpawner spawner in spawners)
+        foreach (EnemySpawner spawner in enemySpawners)
         {
-            spawner.BeginSpawning();
+            spawner.StartSpawning();
         }
-
-        // Update UI when a new wave starts
-        FindObjectOfType<MainUI>().UpdateWave();
     }
 
-    public void RegisterEnemy()
+    public void AddPoints(int value)
     {
-        totalEnemies++;
-        // Update UI when a new enemy is registered
-        FindObjectOfType<MainUI>().UpdateEnemiesLeft();
+        points += value;
+        Debug.Log($"Points updated: {points}");
+        FindObjectOfType<MainUI>()?.UpdatePoints(points);
+    }
+
+    public void OnEnemyKilled()
+    {
+        totalEnemies--;
+    }
+
+    private void UpdateUI()
+    {
+        FindObjectOfType<MainUI>()?.UpdateEnemiesLeft();
+        FindObjectOfType<MainUI>()?.UpdateWave();
     }
 }

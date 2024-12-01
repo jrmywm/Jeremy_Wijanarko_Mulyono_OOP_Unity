@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBoss : MonoBehaviour
+public class EnemyBoss : Enemy
 {
     [SerializeField] private float speed = 5f;
     [SerializeField] private float fireRate = 1f;
@@ -58,4 +58,7 @@ public class EnemyBoss : MonoBehaviour
             nextFireTime = Time.time + fireRate;
         }
     }
+
+
+
 }

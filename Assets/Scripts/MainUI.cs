@@ -9,7 +9,6 @@ public class MainUI : MonoBehaviour
     private Label waveLabel;
 
     private EnemySpawner[] enemySpawners;
-    private int totalPoints = 0;
 
     private Player player;
     private CombatManager combatManager;
@@ -33,7 +32,7 @@ public class MainUI : MonoBehaviour
         {
             UpdateHealth();
             UpdateEnemiesLeft();
-            UpdatePoints();
+            UpdatePoints(combatManager.points);
             UpdateWave();
         }
     }
@@ -48,15 +47,13 @@ public class MainUI : MonoBehaviour
         enemiesLeftLabel.text = "Enemies Left: " + combatManager.totalEnemies;
     }
 
-    public void UpdatePoints()
+public void UpdatePoints(int points)
+{
+    if (pointsLabel != null)
     {
-        totalPoints = 0;
-        foreach (var spawner in enemySpawners)
-        {
-            totalPoints += spawner.totalKill * spawner.enemyPrefab.level;
-        }
-        pointsLabel.text = "Points: " + totalPoints;
+        pointsLabel.text = "Points: " + points;
     }
+}
 
     public void UpdateWave()
     {

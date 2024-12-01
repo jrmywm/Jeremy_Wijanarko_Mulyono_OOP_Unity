@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
 {
     public CombatManager combatManager;
     public EnemySpawner spawner;
-    public int level;
+    public int level=1;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,5 +18,14 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnDestroy()
+    {
+        if (spawner != null && combatManager != null)
+        {
+            spawner.OnEnemyKilled();
+            combatManager.OnEnemyKilled();
+        }
     }
 }

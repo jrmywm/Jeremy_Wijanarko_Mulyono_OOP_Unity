@@ -39,4 +39,8 @@ public class EnemyForward : Enemy
         transform.position = new Vector2(spawnX, screenBounds.y);
         direction = Vector2.down; 
     }
+
+
+
+
 }
